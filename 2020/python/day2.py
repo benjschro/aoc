@@ -1,6 +1,6 @@
 import re
 
-with open('day2.txt') as file:
+with open('../input/day2.txt') as file:
     myList = [line.strip() for line in file]
 
 partOne = 0

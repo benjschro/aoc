@@ -1,4 +1,4 @@
-with open('day1.txt') as file:
+with open('../input/day1.txt') as file:
     myList = [int(line.strip()) for line in file]
 
 partOne = 0

@@ -1,6 +1,6 @@
 import re
 
-with open('day4.txt') as file:
+with open('../input/day4.txt') as file:
     lineArray = [line.strip() for line in file]
 
 passportField = {

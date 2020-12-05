@@ -1,4 +1,4 @@
-with open('day3.txt') as file:
+with open('../input/day3.txt') as file:
     myList = [line.strip() for line in file]
 
 xLen = len(myList[0])
