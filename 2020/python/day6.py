@@ -1,11 +1,9 @@
 with open('../input/day6.txt') as file:
     lineArray = [line.strip() for line in file]
 
-partOneSum = partTwoSum = 0
+partOneSum = partTwoSum = loop = 0
 
 tmpDict = {}
-
-loop = 0
 for i, line in enumerate(lineArray):
     if len(line) != 0:
         for c in line:
