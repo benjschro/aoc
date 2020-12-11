@@ -1,24 +1,30 @@
-import re
-
 with open('../input/day8.txt') as file:
     lines = [line.strip() for line in file]
 
-partOneSum = 0
-partTwoSum = 0
-pattern = '^\"(.*)\"$'
+partOneSum = partTwoSum = skip = 0
 for line in lines:
-    m = re.match(pattern, line, re.I)
-    lineDecoded = bytes(m.group(1), 'utf-8').decode('unicode_escape')
-    partOneSum += len(line) - len(lineDecoded)
 
-    count = 2
-    for c in line:
+    countPartOne = 0
+    countPartTwo = 2
+    for idx, c in enumerate(line):
+        if idx != 0 and idx != len(line) - 1:
+            if skip == 0:
+                if c in ['\\', '\"']:
+                    if line[idx + 1] == 'x':
+                        skip = 3
+                    else:
+                        skip = 1
+                countPartOne += 1
+            else:
+                skip -= 1
+
         if c in ['\\', '\"']:
-            count += 2
+            countPartTwo += 2
         else:
-            count += 1
-    
-    partTwoSum += count - len(line)
+            countPartTwo += 1
+
+    partOneSum += len(line) - countPartOne
+    partTwoSum += countPartTwo - len(line)
 
 print('partOne = ' + str(partOneSum))
 print('partTwo = ' + str(partTwoSum))
