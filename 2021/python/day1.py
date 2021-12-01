@@ -1,18 +1,6 @@
 with open('../input/day1.txt') as file:
     myList = [int(line.strip()) for line in file]
 
-# increases = 0
-
-# first = True
-# last = None
-# for item in myList:
-#     if first is True:
-#         first = False
-#     else:
-#         if item > last:
-#             increases += 1
-#     last = item
-
 last1 = None
 last2 = None
 last3 = None
