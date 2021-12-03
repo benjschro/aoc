@@ -1,30 +1,6 @@
 with open('../input/day3.txt') as file:
     myList = [line.strip() for line in file]
 
-gamma0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0]
-gamma1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0]
-
-# gamma.append(1)
-# gamma.append(0)
-
-# for line in myList:
-#     for i in range(len(line)):
-#         if line[i] == '0':
-#             gamma0[i] += 1
-#         else:
-#             gamma1[i] += 1
-
-# for i in range(len(gamma0)):
-#     if gamma0[i] > gamma1[i]:
-#         print(0)
-#     else:
-#         print(1)
-
-# gam = 0b011100011000
-# eps = 0b100011100111
-# print(gam * eps)
-# 4138664
-
 def countBits(bit, inputList):
     ones = 0
     zeros = 0
