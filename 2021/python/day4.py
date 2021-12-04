@@ -1,5 +1,3 @@
-import re
-
 boards = []
 numbers = None
 
@@ -12,14 +10,11 @@ def loadFile():
 
     numbers = myList[0].split(',')
 
-    stringPattern = '^[0-9]+\s+[0-9]+\s+[0-9]+\s+[0-9]+\s+[0-9]+'
-
-    newBoard = False
     for i in range(2, len(myList), 6):
         newBoard = []
         for j in range(0, 5):
-            m = re.match(stringPattern, myList[i+j])
-            newBoard.append([x for x in m.group(0).split(' ') if x != ''])
+            row = myList[i + j].replace('  ', ' ').split(' ')
+            newBoard.append(row)
 
         boards.append(newBoard)
 
