@@ -20,15 +20,13 @@ def loadFile():
 
 def checkWin(board):
     for row in board:
-        if row == ['!', '!', '!', '!', '!']:
+        if row.count('!') == 5:
             return True
     
-    for col in range(0, len(board[0])):
-        if board[0][col] == '!' and \
-            board[1][col] == '!' and \
-            board[2][col] == '!' and \
-            board[3][col] == '!' and \
-            board[4][col] == '!':
+    # Clever transpose I found on stackoverflow
+    tmpBoard = map(list, map(None, *board))
+    for row in tmpBoard:
+        if row.count('!') == 5:
             return True
 
     return False
