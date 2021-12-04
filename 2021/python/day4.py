@@ -2,7 +2,6 @@ boards = []
 numbers = None
 
 def loadFile():
-    global boards
     global numbers
 
     with open('../input/day4.txt') as file:
@@ -24,8 +23,7 @@ def checkWin(board):
             return True
     
     # Clever transpose I found on stackoverflow
-    tmpBoard = map(list, map(None, *board))
-    for row in tmpBoard:
+    for row in map(list, map(None, *board)):
         if row.count('!') == 5:
             return True
 
@@ -33,10 +31,7 @@ def checkWin(board):
 
 winIdx = []
 numIdx = []
-def solveIndex():
-    global boards
-    global numbers
-
+def solve():
     for i in range(0, len(numbers)):
         for j in range(0, len(boards)):
             if j not in winIdx:
@@ -51,8 +46,6 @@ def solveIndex():
                     numIdx.append(numbers[i])
 
 def getScore(idx):
-    global boards
-
     sum = 0
     for row in boards[winIdx[idx]]:
         for col in row:
@@ -62,7 +55,11 @@ def getScore(idx):
     return sum * int(numIdx[idx])
 
 loadFile()
-solveIndex()
+solve()
 
 print('partOne = ' + str(getScore(0)))
 print('partTwo = ' + str(getScore(-1)))
+
+# $ python3 day4.py
+# partOne = 58374
+# partTwo = 11377
