@@ -30,7 +30,7 @@ def addCoordsD(first, last):
 
 def loadAndProcess(mode):
     counted.clear()
-    
+
     with open('../input/day5.txt') as file:
         myList = [line.strip() for line in file]
 
@@ -63,6 +63,6 @@ partTwo = loadAndProcess('part2')
 print('partOne = ' + str(partOne))
 print('partTwo = ' + str(partTwo))
 
-# $ python3 day4.py
+# $ python3 day5.py
 # partOne = 6007
 # partTwo = 19349
