@@ -20,14 +20,13 @@ def simDays(days):
                 if j == 0:
                     fishDictTemp[6] = fishDict[0]
                     fishDictTemp[8] = fishDict[0]
-                else:
-                    if j == 7:
-                        if 6 in fishDictTemp:
-                            fishDictTemp[6] += fishDict[7]
-                        else:
-                            fishDictTemp[6] = fishDict[7]
+                elif j == 7:
+                    if 6 in fishDictTemp:
+                        fishDictTemp[6] += fishDict[7]
                     else:
-                        fishDictTemp[j-1] = fishDict[j]
+                        fishDictTemp[6] = fishDict[7]
+                else:
+                    fishDictTemp[j-1] = fishDict[j]
 
         fishDict = fishDictTemp.copy()
     
