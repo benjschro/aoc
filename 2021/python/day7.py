@@ -4,11 +4,8 @@ with open('../input/day7.txt') as file:
 tmp =  list(map(int, myList[0].split(',')))
 
 def solve(part):
-    minimum = min(tmp)
-    maximum = max(tmp)
-
     smallestSum = None
-    for i in range(minimum, maximum + 1):
+    for i in range(min(tmp), max(tmp) + 1):
         sum = 0
         for item in tmp:
             if part == 1:
