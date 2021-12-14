@@ -1,72 +1,49 @@
 from collections import Counter
 
 with open('../input/day14.txt') as file:
-    myList = [line.strip() for line in file]
+    fileInput = [line.strip() for line in file]
 
-template = myList[0]
-pairs = {}
+polymer = {}
+pairInsertionRules = {}
 
-for i in range(2, len(myList)):
-    pair = myList[i].split(' -> ')
-    pairs[pair[0]] = pair[1]
+for i in range(2, len(fileInput)):
+    tmp = fileInput[i].split(' -> ')
+    pairInsertionRules[tmp[0]] = tmp[1]
 
-newPairs = {}
+for i in range(0, len(fileInput[0]) - 1):
+    pair = fileInput[0][i:i+2]
+    polymer[pair] = 1 if pair not in polymer else polymer[pair] + 1
 
 def step():
-    global pairs
-    global newPairs
-    newPairsUpdate = {}
-    for i, pair in enumerate(newPairs):
-        mult = newPairs[pair]
-        newPairLetter = pairs[pair]
-        if pair[0] + newPairLetter not in newPairsUpdate:
-            newPairsUpdate[pair[0] + newPairLetter] = mult
-        else:
-            newPairsUpdate[pair[0] + newPairLetter] += mult
-        
-        if newPairLetter + pair[1] not in newPairsUpdate:
-            newPairsUpdate[newPairLetter + pair[1]] = mult
-        else:
-            newPairsUpdate[newPairLetter + pair[1]] += mult
+    newPolymer = {}
+    for pair in polymer:
+        element = pairInsertionRules[pair]
+        count = polymer[pair]
 
-    newPairs = newPairsUpdate
+        newPair = pair[0] + element
+        newPolymer[newPair] = count if newPair not in newPolymer else newPolymer[newPair] + count
+        newPair = element + pair[1]
+        newPolymer[newPair] = count if newPair not in newPolymer else newPolymer[newPair] + count
+    return newPolymer
 
+def solve():
+    elementCount = {}
+    for pair in polymer:
+        count = polymer[pair]
+        for element in pair:
+            elementCount[element] = count if element not in elementCount else elementCount[element] + count
+    
+    for element in elementCount:
+        elementCount[element] = (elementCount[element] + 1) // 2
 
-def stepCount(x):
-    newPairs.clear()
+    return max(elementCount.values()) - min(elementCount.values())
 
-    for i in range(0, len(template) - 1):
-        pair = template[i] + template[i+1]
-        if pair not in newPairs:
-            newPairs[pair] = 1
-        else:
-            newPairs[pair] += 1
+for _ in range(10):
+    polymer = step()
+partOne = solve()
+for _ in range(30):
+    polymer = step()
+partTwo = solve()
 
-    for i in range(0, x):
-        step()
-
-    letterDict = {}
-    for pair in newPairs:
-        for letter in pair:
-            if letter in letterDict:
-                letterDict[letter] += newPairs[pair]
-            else:
-                letterDict[letter] = newPairs[pair]
-
-    finalDict = {}
-    for letter in letterDict:
-        finalDict[letter] = (letterDict[letter] + 1) // 2
-
-
-    highest = None
-    lowest = None
-    for i, val in enumerate(finalDict):
-        if highest is None or finalDict[val] > highest:
-            highest = finalDict[val]
-        if lowest is None or finalDict[val] < lowest:
-            lowest = finalDict[val]
-
-    return highest - lowest
-
-print('partOne = ' + str(stepCount(10)))
-print('partTwo = ' + str(stepCount(40)))
+print('partOne = ' + str(partOne))
+print('partTwo = ' + str(partTwo))
