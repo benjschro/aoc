@@ -1,5 +1,3 @@
-from collections import Counter
-
 with open('../input/day14.txt') as file:
     fileInput = [line.strip() for line in file]
 
