@@ -1,58 +1,60 @@
+import collections
+
 with open('../input/day11.txt') as file:
     lines = [line.strip() for line in file]
 
-currentPassword = list('hepxcrrq')#list(lines[0])
-# print(currentPassword)
-# exit()
+def getNewPassword(password):
+    validPassword = False
 
-allRulesMet = False
-while not allRulesMet:
-    for i in range(len(currentPassword) - 1, -1, -1):
-        ordChar = ord(currentPassword[i])
-        if ordChar < 122:
-            ordChar += 1
-        else:
-            ordChar = 97
+    password = list(password)
+
+    while validPassword is False:
+        for i in range(len(password) - 1, 0, -1):
+            if password[i] != 'z':
+                password[i] = chr(ord(password[i]) + 1)
+                break
+            else:
+                password[i] = 'a'
+
+        rule1 = False
+        d = collections.deque(maxlen=3)
+        for c in password:
+            d.append(ord(c))
+            if len(d) == 3 and d[0] + 2 == d[1] + 1 == d[2]:
+                rule1 = True
+                break
+        if not rule1:
+            continue
         
-        if ordChar in [105, 111, 108]:
-            ordChar += 1
+        rule2 = True
+        for c in ['i', 'o', 'l']:
+            if c in password:
+                rule2 = False
+                break
+        if not rule2:
+            continue
         
-        chrChar = chr(ordChar)
-        currentPassword[i] = chrChar
+        rule3 = False
+        pairs = set()
+        for i in range(len(password) - 1):
+            pair = password[i] + password[i+1]
+            if pair[0] == pair[1]:
+                pairs.add(pair)
+            if len(pairs) >= 2:
+                rule3 = True
+                break
+        if not rule3:
+            continue
 
-        if ordChar != 97:
-            break
-    
-    # check rule 1
-    lastChar = ord(currentPassword[0])
-    runLength = 1
-    for i in range(1, len(currentPassword)):
-        if ord(currentPassword[i]) == lastChar + 1:
-            lastChar = ord(currentPassword[i])
-            runLength += 1
-    if runLength < 3:
-        continue
-    
-    # check rule 2
-    # for i in range(0, len(currentPassword)):
-    #     if currentPassword[i] in ['i', 'o', 'l']:
-    #         allRulesMet = False
-    #         break
-    
-    pairCount = 0
-    i = 0
-    while i < len(currentPassword) - 1:
-        if currentPassword[i] == currentPassword[i+1]:
-            pairCount += 1
-            i += 2
-        else:
-            i += 1
+        break
 
-    if pairCount < 2:
-        continue
+    newPassword = ''
+    for c in password:
+        newPassword += c
     
-    allRulesMet = True
+    return newPassword
 
-print(''.join(currentPassword))
-
-# hxbyiijj is wrong
+partOne = getNewPassword(lines[0])
+partTwo = getNewPassword(partOne)
+print('partOne = ' + str(partOne))
+print('partTwo = ' + str(partTwo))
