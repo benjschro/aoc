@@ -1,82 +1,62 @@
-from bitstring import BitString
+import math
 
 with open('../input/day16.txt') as file:
     fileInput = [line.strip() for line in file]
 
-a = BitString('0x' + fileInput[0])
+a = format(int(fileInput[0], 16), str(len(fileInput[0])*2) + 'b')
 
-vVals = []
-literals = []
+VList = []
 def parsePacket(idx):
-
-    V = int(str(a[idx:idx+3]), 2)
-    T = int(str(a[idx+3:idx+6]), 2)
+    V = int(a[idx:idx+3], 2)
+    VList.append(V)
+    T = int(a[idx+3:idx+6], 2)
 
     idx += 6
 
-    groups = []
     if T == 4:
-        vVals.append(V)
-        numString = None
+        groups = ''
         while True:
             prefix = a[idx]
-            groups.append(a[idx+1:idx+5].bin)
+            groups += a[idx+1:idx+5]
             idx += 5
-            if not prefix:
+            if prefix == '0':
                 break
-        literal = '0b'
-        for n in groups:
-            literal += n
-        literal = int(literal, 2)
-        return idx, literal
+        result = int(groups, 2)
     else:
-        vVals.append(V)
         I = a[idx]
-        idx += 1
         results = []
-        if not I:
-            L = a[idx:idx+15].int
-            idx += 15
+        if I == '0':
+            L = int(a[idx+1:idx+16], 2)
+            idx += 16
             idx_complete = idx + L            
-            while idx < idx_complete:
-                jdx, literal = parsePacket(idx)
+            while idx != idx_complete:
+                idx, literal = parsePacket(idx)
                 results.append(literal)
-                idx = jdx
         else:
-            L = a[idx:idx+11].int
-            idx += 11
+            L = int(a[idx+1:idx+12], 2)
+            idx += 12
             while L > 0:
-                jdx, literal = parsePacket(idx)
+                idx, literal = parsePacket(idx)
                 results.append(literal)
-                idx = jdx
                 L -= 1
 
-        result = None
         if T == 0:
-            result = 0
-            for r in results:
-                result += r
+            result = sum(results)
         elif T == 1:
-            result = 1
-            for r in results:
-                result *= r
+            result = math.prod(results)
         elif T == 2:
-            for r in results:
-                if result is None or r < result:
-                    result = r
+            result = min(results)
         elif T == 3:
-            for r in results:
-                if result is None or r > result:
-                    result = r
+            result = max(results)
         elif T == 5:
-            result = 1 if results[0] > results[1] else 0
+            result = int(results[0] > results[1])
         elif T == 6:
-            result = 1 if results[0] < results[1] else 0
+            result = int(results[0] < results[1])
         elif T == 7:
-            result = 1 if results[0] == results[1] else 0
+            result = int(results[0] == results[1])
 
-        return idx, result
+    return idx, result
 
-idx, result = parsePacket(0)
-print('partOne = ' + str(sum(vVals)))
+_, result = parsePacket(0)
+print('partOne = ' + str(sum(VList)))
 print('partTwo = ' + str(result))
